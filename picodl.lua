@@ -2,11 +2,12 @@
 -- Usage: picodl "download URL" "base file name" "file extension"
 
 local args = env().argv or {}
-local url = args[1] or ""
-local baseName = args[2] or ""
-local ext = args[3] or ""
-local currentver = "2"
-local onlinever
+local type = args[1] or ""
+local url = args[2] or ""
+local baseName = args[3] or ""
+local ext = args[4] or ""
+local currentver = "4"
+local onlinever = fetch("https://doxidevos.github.io/picodlver.txt") or ""
 
 -- Fetch online version first
 onlinever = fetch("https://doxidevos.github.io/picodlver.txt") or ""
@@ -40,8 +41,10 @@ end
 -- Check for an update
 chkver()
 
+if type == "web" then
+
 if url == "" or baseName == "" or ext == "" then
-    print("Usage: picodl \"<download URL>\" \"base file name\" \"file extension\"")
+    print("Usage: picodl web \"<download URL>\" \"base file name\" \"file extension\"")
     return
 end
 
@@ -58,7 +61,34 @@ local data = fetch(url) or ""
 if data == "" then
     print("Download failed for URL: " .. url)
     return
+	end
+	
+print("This feature will be added soon")
+local fullPath = "Canceled By Program"
+
+	else if type == "cart" then
+	
+if url  == "" then
+print("Usage: picodl cart \"<cart name>\" (not added yet, coming soon)")
+return
 end
 
+else
+print("Usage: picodl \"<web/cart>\" \"<download URL>\" \"base file name\" \"file extension\"")
+print(" or picodl cart \"<cart name>\" which will be added soon")
+   return
+
+end
+
+
+
 store(fullPath, data, {})  -- Always pass an empty table for metadata.
+if type == "cart" then
+print("Work In Progress feature")
+elseif type == "web" then
 print("Download complete! File saved as: " .. fullPath)
+else
+print("How the heck did you do that!?!?!?")
+end
+end
+end
